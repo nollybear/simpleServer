@@ -1,0 +1,13 @@
+
+<div ng-controller = "homeController">
+<fieldset>
+    <legend>Add a Friend</legend>
+<form ng-submit = "createFriend()">
+First Name: <input type="text" ng-model = "friend.firstName">
+Last Name: <input type="text" ng-model = "friend.lastName">
+Age: <input type="number" ng-model = "friend.age">
+<input type="submit" value = "Add Friend">
+</form>
+</fieldset>
+<button><a href="#!/">GO HOME</a></button>
+</div>

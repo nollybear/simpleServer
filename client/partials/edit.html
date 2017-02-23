@@ -1,0 +1,14 @@
+
+<div ng-controller = "editController">
+<fieldset>
+    <legend>Edit Friend</legend>
+<form ng-submit = "editFriend()">
+
+First Name: <input type="text" placeholder = {{friend.firstName}} ng-model = "friend.firstName">
+Last Name: <input type="text" placeholder = {{friend.lastName}} ng-model = "friend.lastName">
+Age: <input type="number" placeholder = {{friend.age}} ng-model = "friend.age">
+<input type="submit" value = "Submit Updated Info">
+</form>
+</fieldset>
+<button><a href="#!/">GO HOME</a></button>
+</div>

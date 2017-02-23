@@ -1,0 +1,22 @@
+<div ng-controller = "homeController">
+<table>
+<thead>
+    <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+</thead>
+<tbody ng-repeat="friend in friends">
+  <tr>
+    <td>{{friend.firstName}} {{friend.lastName}}</td>
+    <td>{{friend.age}}</td>
+    <td><button><a ng-href="#!/friends/{{friend._id}}/edit">Edit</a></button></td>
+    <td><button ng-click="deleteFriend(friend)"><a>Delete</a></button></td>
+  </tr>
+</tbody>
+</table>
+</br>
+<button><a href="#!/new">Add a friend</a></button>
+</div>
