@@ -1,0 +1,17 @@
+<div ng-controller = "allQuestionsController">
+    <form ng-submit="playQuiz()">
+        <div ng-repeat="question in questions">
+            <fieldset ng-model="answer" name="answer{{$index}}">
+                <legend>{{question.question}}</legend>
+                    <input type="radio"  ng-value="true" > {{question.correctAnswer}}<br>
+                    <input  type="radio"  ng-value="false"> {{question.falseAnswerOne}}<br>
+                    <input  type="radio" ng-value="alsofalse"> {{question.falseAnswerTwo}}
+            </fieldset>
+        </div>
+
+            <input type="submit" value="Submit">
+    </form>
+
+</div>
+
+<button><a href="#!/">GO HOME</a></button>

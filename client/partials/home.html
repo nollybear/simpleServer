@@ -1,22 +1,43 @@
 <div ng-controller = "homeController">
+
+    <div ng-show="tempPlayer == null">Hello {{tempPlayer.name}}{{tempPlayer}}</div>
+    <a href="#!/newQuestion">Add a Question</a> | <a href="#!/logout">Logout</a>
+
+</br>
+</br>
+</br>
+<form ng-submit="createPlayer()" ng-show="tempPlayer != null">
+    <h2>Create an Account</h2>
+</br>
+    Your name: <input type="text" ng-model="player.name" value="">
+    <input type="submit" name="" value="submit">
+</form>
+</br>
+</br>
+</br>
+
+<fieldset>
+    <legend>Play</legend>
+    <a href="#!/allQuestions">Play the trivia game!</a>
+</fieldset>
+</br>
+</br>
+</br>
+
 <table>
 <thead>
     <tr>
         <th>Name</th>
-        <th>Age</th>
-        <th>Update</th>
-        <th>Delete</th>
+        <th>Score</th>
+        <th>Percentage</th>
     </tr>
 </thead>
-<tbody ng-repeat="friend in friends">
+<tbody ng-repeat="player in players">
   <tr>
-    <td>{{friend.firstName}} {{friend.lastName}}</td>
-    <td>{{friend.age}}</td>
-    <td><button><a ng-href="#!/friends/{{friend._id}}/edit">Edit</a></button></td>
-    <td><button ng-click="deleteFriend(friend)"><a>Delete</a></button></td>
+    <td>{{player.name}}</td>
+    <td>{{player.score}}</td>
+    <td>PERCENTAGE GOES HERE</td>
   </tr>
 </tbody>
 </table>
-</br>
-<button><a href="#!/new">Add a friend</a></button>
 </div>

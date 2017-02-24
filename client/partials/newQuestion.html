@@ -1,0 +1,13 @@
+<div ng-controller = "newQuestionController">
+<fieldset>
+    <legend>Add a Question</legend>
+<form ng-submit = "createQuestion()">
+Question: <input type="text" ng-model = "question.question">
+Correct Answer: <input type="text" ng-model = "question.correctAnswer">
+False Anser One: <input type="text" ng-model = "question.falseAnswerOne">
+False Anser Two: <input type="text" ng-model = "question.falseAnswerTwo">
+<input type="submit" value = "Add Question">
+</form>
+</fieldset>
+<button><a href="#!/">GO HOME</a></button>
+</div>

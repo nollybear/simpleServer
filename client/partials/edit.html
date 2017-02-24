@@ -1,12 +1,11 @@
 
 <div ng-controller = "editController">
 <fieldset>
-    <legend>Edit Friend</legend>
-<form ng-submit = "editFriend()">
+    <legend>Edit player</legend>
+<form ng-submit = "editPlayer()">
 
-First Name: <input type="text" placeholder = {{friend.firstName}} ng-model = "friend.firstName">
-Last Name: <input type="text" placeholder = {{friend.lastName}} ng-model = "friend.lastName">
-Age: <input type="number" placeholder = {{friend.age}} ng-model = "friend.age">
+Name: <input type="text" placeholder = {{player.name}} ng-model = "player.name">
+Score: <input type="number" placeholder = {{player.score}} ng-model = "player.score">
 <input type="submit" value = "Submit Updated Info">
 </form>
 </fieldset>

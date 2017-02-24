@@ -10,15 +10,25 @@
 
         <script>
             var myApp = angular.module('myApp', ['ngRoute']);
+
             myApp.config(function($routeProvider, $locationProvider){
                $routeProvider
                   .when("/", {
                      templateUrl: "/partials/home.html"
                   })
+                  .when("/newQuestion", {
+                     templateUrl: "/partials/newQuestion.html",
+                     controller: 'newQuestionController'
+                  })
+                  .when("/allQuestions", {
+                     templateUrl: "/partials/allQuestions.html"
+                  })
+
+
                   .when("/new", {
                      templateUrl: "/partials/new.html"
                   })
-                  .when('/friends/:id/edit', {
+                  .when('/players/:id/edit', {
                     templateUrl: 'partials/edit.html',
                     controller: 'editController'
                   })
@@ -27,19 +37,26 @@
                   });
             })
 
+
+
+
             myApp.factory('allFactory', ['$http', function($http) {
               var factory = {};
-              var friends = [];
+              var players = [];
+              var tempPlayer = "";
+
+
 
               factory.index = function(callback){
-                $http.get('/friends').then(function(res) {
+                $http.get('/players').then(function(res) {
                     callback(res.data)
                 })
               }
 
-              factory.createFriend = function(friend, callback){
-                  console.log("in factory for create friend", friend);
-                  $http.post('/friends', friend).then(function(res) {
+              factory.createPlayer = function(player, callback){
+                  console.log("in factory for create player", player);
+                  tempPlayer = player.name;
+                  $http.post('/players', player).then(function(res) {
                       console.log(res.data);
                       if (typeof callback === 'function') {
                           callback(res.data);
@@ -47,77 +64,158 @@
                   })
               }
 
-              factory.deleteFriend = function(friend, callback){
-                  console.log("in deleteFriend facotyr", friend._id)
-                  $http.delete('/friends/'+friend._id).then(function(res) {
+              factory.getTemp = function(callback){
+                    callback(tempPlayer)
+                }
+
+
+              factory.createQuestion = function(question, callback){
+                  console.log("in factory for create question", question);
+                  $http.post('/questions', question).then(function(res) {
+                      console.log(res.data);
+                          callback(res.data);
+                  })
+              }
+
+              factory.deletePlayer = function(player, callback){
+                  console.log("in deletePlayer facotyr", player._id)
+                  $http.delete('/players/'+player._id).then(function(res) {
                     callback(res.data);
                   })
               }
 
               factory.show = function(id, callback) {
-                $http.get('/friends/'+id).then(function(res) {
+                $http.get('/players/'+id).then(function(res) {
                     console.log(res.data);
                     callback(res.data)
                 })
               }
 
-              factory.update = function(friend, callback) {
-                $http.put('/friends/'+friend._id, friend).then(function(res) {
+              factory.update = function(player, callback) {
+                $http.put('/players/'+player._id, player).then(function(res) {
                     callback(res.data)
                 })
               }
 
+              factory.indexQuestions = function(callback){
+                  console.log("reached index questions in factory");
+                $http.get('/questions').then(function(res) {
+                    callback(res.data)
+                })
+              }
 
               return factory;
             }]);
 
-            myApp.controller('homeController', ['$scope','allFactory', '$location', '$routeParams', function($scope, allFactory, $location, $routeParams) {
-              function setFriends(data){
-                $scope.friends = data;
-                $scope.friend = {};
+            myApp.controller('homeController', ['$scope','allFactory','$location', '$routeParams', function($scope, allFactory, $location, $routeParams) {
+              function setPlayers(data){
+                $scope.players = data;
+                $scope.player = {};
               }
 
-              $scope.friend = {};
-              $scope.friends = {};
+              function setTemp(data){
+                  $scope.tempPlayer = data
+              }
+
+
+              $scope.player = {};
+              $scope.players = {};
+              $scope.tempPlayer = "";
+
 
               $scope.index = function(){
-                allFactory.index(setFriends);
+                allFactory.index(setPlayers);
               }
+
+              $scope.getTemp = function(){
+                allFactory.getTemp(setTemp);
+              }
+
+              console.log("printing temp player in controller", $scope.tempPlayer)
+
 
               $scope.index();
+              $scope.getTemp();
 
-              $scope.createFriend = function(){
-                  console.log($scope.friend)
-                allFactory.createFriend($scope.friend, setFriends);
-                $location.url('/')
+
+              $scope.createPlayer = function(){
+                  console.log($scope.player);
+                allFactory.createPlayer($scope.player, setPlayers);
               }
-              $scope.deleteFriend = function(friend){
-                allFactory.deleteFriend(friend, function(data) {
+              $scope.deletePlayer = function(player){
+                allFactory.deletePlayer(player, function(data) {
                     allFactory.index(function(data) {
-                        $scope.friends = data
+                        $scope.players = data
                     })
                 })
               }
             }]);
 
-            myApp.controller('editController', ['$scope','allFactory', '$location', '$routeParams', function($scope, allFactory, $location, $routeParams) {
-                allFactory.show($routeParams.id, function(data) {
-                    $scope.friend = data
-                })
-                console.log($routeParams.id)
+            myApp.controller('newQuestionController', ['$scope','allFactory', '$location', '$routeParams', function($scope, allFactory, $location, $routeParams) {
+                function setQuestions(data){
+                  $scope.questions = data;
+                  $scope.question = {};
+                }
 
-                $scope.editFriend = function() {
-                    console.log($scope.friend);
-                    allFactory.update($scope.friend, function(data) {
-                    $location.url('/');
-                })
-            }
+                $scope.question = {};
+                $scope.questions = {};
+
+                $scope.indexQuestions = function(){
+                  allFactory.index(setQuestions);
+                }
+
+                $scope.indexQuestions();
+
+                $scope.createQuestion = function(){
+                    console.log($scope.question)
+                  allFactory.createQuestion($scope.question, setQuestions);
+                  $location.url('/')
+                }
             }]);
+
+            myApp.controller('allQuestionsController', ['$scope','allFactory', '$location', '$routeParams', function($scope, allFactory, $location, $routeParams) {
+
+                function setQuestions(data){
+                  $scope.questions = data;
+                  $scope.question = {};
+                }
+
+                $scope.question = {};
+                $scope.questions = {};
+
+                $scope.answer = {};
+                $scope.answers = {};
+
+
+                $scope.indexQuestions = function(){
+                  allFactory.indexQuestions(setQuestions);
+                }
+
+                $scope.playQuiz = function(){
+                    var counter = 0;
+                    console.log("print answer", $scope.answer);
+                    console.log("printing answers", $scope.answers);
+
+                    for (answer in $scope.answers) {
+                        console.log("in for loop");
+                        if (answer == "true") {
+                            counter = counter + 1
+                        }
+                    }
+                    console.log(counter);
+                  allFactory.playQuiz(counter, setQuestions);
+                }
+
+
+                $scope.indexQuestions();
+            }]);
+
+
         </script>
 
     </head>
     <body>
-        <h1>FRIEND API</h1>
+        <h1>TRIVIA GAME</h1>
         <div ng-view="">
         </div>
     </body>
